@@ -1,30 +1,68 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
-  </head>
-  <body ng-app="dirList">
-    <div ng-controller="control">
-      <table>
-        <thead>
-          <tr>
-            <th>Key</th>
-            <th>Size</th>
-            <th>Uploaded</th>
-            <th>Content Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="item in items">
-            <td>{{ item.key }}</td>
-            <td>{{ item.size }}</td>
-            <td>{{ item.uploaded }}</td>
-            <td>{{ item.httpMetadata.contentType }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <br>
-      <table>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <base href="/" />
+  <style>
+    body {
+      background: rgb(23, 23, 23);
+      background: linear-gradient(52deg,
+          rgba(23, 23, 23, 1) 20%,
+          rgba(49, 17, 70, 1) 52%,
+          rgba(64, 0, 106, 1) 78%);
+      margin: 10px;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      scroll-behavior: smooth;
+    }
+
+    .table {
+      color: #ddd;
+      width: auto;
+      border-collapse: collapse;
+      font-family: 'Courier New', Courier, monospace;
+      margin-top: 10px;
+    }
+
+    .table th,
+    .table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+      background-color: rgba(8, 8, 8, 0.178);
+    }
+
+    .table th {
+      background-image: url("https://cdn.spco.xyz/assets/img/imagedoc-darknoise.png");
+      background-color: rgba(8, 8, 8, 0.68);
+    }
+  </style>
+</head>
+
+<body ng-app="dirList">
+  <div ng-controller="control">
+    <table ng-if="items.length > 0" class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Size</th>
+          <th>Uploaded</th>
+          <th>Content Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in items">
+          <td>{{ item.key }}</td>
+          <td>{{ item.size }}</td>
+          <td>{{ item.uploaded }}</td>
+          <td>{{ item.httpMetadata.contentType }}</td>
+        </tr>
+      </tbody>
+      <table class="table" ng-if="folders.length > 0">
         <thead>
           <tr>
             <th>Folders</th>
@@ -32,25 +70,26 @@
         </thead>
         <tbody>
           <tr ng-repeat="folder in folders">
-            <td>{{ folder }}</td>
+            <td><a href="?dir={{ folder }}">{{ folder }}</a></td>
           </tr>
         </tbody>
       </table>
-    </div>
-    
-    <script>
-      var app = angular.module("dirList", []);
-      
-      app.controller("control", function($scope, $http, $location) {
-        var dir = $location.search().dir || "/";
-        var url = "https://cdn.api.spco.xyz" + dir;
-        
-        $http.get(url)
-          .then(function(response) {
-            $scope.items = response.data.value;
-            $scope.folders = response.data.folders;
-          });
+  </div>
+  <script>
+    var app = angular.module("dirList", []);
+
+    app.controller("control", function ($scope, $http) {
+      //get query string
+      var urlParams = new URLSearchParams(window.location.search);
+      var dir = urlParams.get("dir");
+      var url = "https://cdn.api.spco.xyz/" + dir;
+
+      $http.get(url).then(function (response) {
+        $scope.items = response.data.value;
+        $scope.folders = response.data.folders;
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>
