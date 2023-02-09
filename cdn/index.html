@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-  <base href="/" />
+  <base href="cdn/" />
   <style>
     body {
       background: rgb(23, 23, 23);
@@ -70,7 +70,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="folder in folders">
-            <td><a href="?dir={{ folder }}">{{ folder }}</a></td>
+            <td><a href="cdn/?dir={{ folder }}">{{ folder }}</a></td>
           </tr>
         </tbody>
       </table>
@@ -82,6 +82,9 @@
       //get query string
       var urlParams = new URLSearchParams(window.location.search);
       var dir = urlParams.get("dir");
+      if (dir == null) {
+        dir = "";
+      }
       var url = "https://cdn.api.spco.xyz/" + dir;
 
       $http.get(url).then(function (response) {
