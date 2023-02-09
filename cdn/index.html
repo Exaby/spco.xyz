@@ -56,7 +56,7 @@
       </thead>
       <tbody>
         <tr ng-repeat="item in items">
-          <td>{{ item.key }}</td>
+          <td><a href = "https://cdn.spco.xyz/{{ item.key }}">{{ item.key.split("/").pop() }}</a></td>
           <td>{{ item.size }}</td>
           <td>{{ item.uploaded }}</td>
           <td>{{ item.httpMetadata.contentType }}</td>
