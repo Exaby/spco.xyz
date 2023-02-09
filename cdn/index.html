@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+  </head>
+  <body ng-app="dirList">
+    <div ng-controller="control">
+      <table>
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Size</th>
+            <th>Uploaded</th>
+            <th>Content Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in items">
+            <td>{{ item.key }}</td>
+            <td>{{ item.size }}</td>
+            <td>{{ item.uploaded }}</td>
+            <td>{{ item.httpMetadata.contentType }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <table>
+        <thead>
+          <tr>
+            <th>Folders</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="folder in folders">
+            <td>{{ folder }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <script>
+      var app = angular.module("dirList", []);
+      
+      app.controller("control", function($scope, $http, $location) {
+        var dir = $location.search().dir || "/";
+        var url = "https://cdn.api.spco.xyz" + dir;
+        
+        $http.get(url)
+          .then(function(response) {
+            $scope.items = response.data.value;
+            $scope.folders = response.data.folders;
+          });
+      });
+    </script>
+  </body>
+</html>
