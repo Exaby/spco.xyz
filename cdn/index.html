@@ -55,6 +55,14 @@
         </tr>
       </thead>
       <tbody>
+            <div g-if="folders.length > 0">
+                <tr ng-repeat="folder in folders">
+                  <td><a href="/cdn/?dir={{ folder }}">{{ folder.split("/").pop() }}</a></td>
+                  <td></td>
+                  <td></td>
+                  <td>Folder</td>
+                </tr>
+              </div>
         <tr ng-repeat="item in items">
           <td><a href = "https://cdn.spco.xyz/{{ item.key }}">{{ item.key.split("/").pop() }}</a></td>
           <td>{{ item.size }}</td>
@@ -62,18 +70,6 @@
           <td>{{ item.httpMetadata.contentType }}</td>
         </tr>
       </tbody>
-      <table class="table" ng-if="folders.length > 0">
-        <thead>
-          <tr>
-            <th>Folders</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="folder in folders">
-            <td><a href="/cdn/?dir={{ folder }}">{{ folder }}</a></td>
-          </tr>
-        </tbody>
-      </table>
   </div>
   <script>
     var app = angular.module("dirList", []);
