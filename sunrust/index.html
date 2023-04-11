@@ -103,10 +103,16 @@
         background-color: #ffffffad;
         color: #2b2b2b;
       }
+      footer {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        color: #dddddd;
+      }
     </style>
   </head>
-  <body ng-app="mapApp">
-    <div ng-controller="mapController" class="grid-container">
+  <body ng-app="mapApp" ng-controller="mapController">
+    <div class="grid-container">
       <div
         class="grid-item"
         ng-repeat="map in maps | orderBy: 'map'"
@@ -126,7 +132,11 @@
         </a>
       </div>
     </div>
-
+    <footer>
+      <p>
+        Indexed {{mapCount()}} maps being played by {{serverCount()}} servers
+      </p>
+    </footer>
     <script>
       var app = angular.module("mapApp", []);
       app.controller("mapController", function ($scope, $http, $interval) {
@@ -163,8 +173,13 @@
               $scope.servers = response.data;
             });
         };
-
         $interval($scope.refreshData, 60000);
+        $scope.mapCount = function () {
+          return $scope.maps.length;
+        };
+        $scope.serverCount = function () {
+          return $scope.servers.length;
+        };
       });
     </script>
   </body>
