@@ -23,11 +23,30 @@
         getMapData();
       });
     </script>
-  </head>
-  <body ng-app="mapApp" ng-controller="mapController">
-    <div class="grid-container">
-      <div class="grid-item" ng-repeat="map in maps">
-        <a href="{{map.url}}">{{map.url}}</a>
-      </div>
-    </div>
+    <style>
+        /* This Source Code Form is subject to the terms of the Mozilla Public
+            * License, v. 2.0. If a copy of the MPL was not distributed with this
+            * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            -moz-control-character-visibility: visible;
+        }
+
+        .nowrap pre {
+            white-space: pre;
+        }
+
+        html:not([dir]) pre {
+            unicode-bidi: plaintext;
+        }
+
+        :root {
+            color-scheme: light dark;
+        }
+    </style>
+</head>
+
+<body ng-app="mapApp" ng-controller="mapController">
+    <pre><code><a href="{{map.url}}" ng-repeat="map in maps">{{map.url + "\n"}}</a></code></pre>
 </html>
