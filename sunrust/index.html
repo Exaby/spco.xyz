@@ -118,7 +118,7 @@
         >
           <h3 ng-class="{ playing: isPlaying(map) }">{{map.map}}</h3>
           <p ng-if="isPlaying(map)" ng-class="{ playing: isPlaying(map) }">
-            Currently being played by {{getLastServer(map).serverName}}
+            Currently being played by {{getLastServer(map).serverName}} with {{getLastServer(map).playerCount}} player(s)
           </p>
           <p ng-if="!isPlaying(map)" ng-class="{ playing: isPlaying(map) }">
             Last played by {{map.playedBy[0].serverShortName.replace('_','')}}
