@@ -153,7 +153,7 @@
 
         $scope.isPlaying = function (map) {
           var server = $scope.getLastServer(map);
-          return server && server.playerCount > 0;
+          return server;
         };
 
         $scope.refreshData = function () {
