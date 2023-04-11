@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Map Download Links</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link rel="shortcut icon" href="https://cdn.spco.xyz/favicon.ico" />
+    <meta property="og:site_name" content="Map Download Links" />
+    <meta property="og:title" content="Map Download Links" />
+    <script>
+      var app = angular.module("mapApp", []);
+      app.controller("mapController", function ($scope, $http, $interval) {
+        function getMapData() {
+          $http.get("https://sr-db.spco.xyz/mapdata").then(function (response) {
+            $scope.maps = response.data;
+            for (var i = 0; i < $scope.maps.length; i++) {
+              $scope.maps[i].url = "https://files.sunrust.org/fastdl/maps/" + $scope.maps[i].map + ".bsp";
+            }
+          });
+        }
+        getMapData();
+      });
+    </script>
+  </head>
+  <body ng-app="mapApp" ng-controller="mapController">
+    <div class="grid-container">
+      <div class="grid-item" ng-repeat="map in maps">
+        <a href="{{map.url}}">{{map.url}}</a>
+      </div>
+    </div>
+</html>
