@@ -127,7 +127,7 @@
             Currently being played by {{getLastServer(map).serverName}} with {{getLastServer(map).playerCount}} player(s)
           </p>
           <p ng-if="!isPlaying(map)" ng-class="{ playing: isPlaying(map) }">
-            Last played by {{map.playedBy[0].serverShortName.replace('_','')}}
+            Last played by {{map.playedBy[0].serverShortName.replace('_','')}} on {{map.playedLast}}
           </p>
         </a>
       </div>
