@@ -113,24 +113,18 @@
   </head>
   <body ng-app="mapApp" ng-controller="mapController">
     <div class="grid-container">
-      <div
-        class="grid-item"
-        ng-repeat="map in maps | orderBy: 'map'"
-        style="background-image: url('https://files.sunrust.org/map_images/{{map.map}}.jpg')"
-      >
-        <a
-          href="https://files.sunrust.org/fastdl/maps/{{map.map}}.bsp"
-          target="_blank"
-        >
-          <h3 ng-class="{ playing: isPlaying(map) }">{{map.map}}</h3>
-          <p ng-if="isPlaying(map)" ng-class="{ playing: isPlaying(map) }">
-            Currently being played by {{getLastServer(map).serverName}} with {{getLastServer(map).playerCount}} player(s)
-          </p>
-          <p ng-if="!isPlaying(map)" ng-class="{ playing: isPlaying(map) }">
-            Last played by {{map.playedBy[0].serverShortName.replace('_','')}} on {{map.playedLast}}
-          </p>
-        </a>
-      </div>
+      <div class="grid-item" ng-repeat="map in maps | orderBy:'-playedLast'" 
+  style="background-image: url('https://files.sunrust.org/map_images/{{map.map}}.jpg')">
+           <a href="https://files.sunrust.org/fastdl/maps/{{map.map}}.bsp" target="_blank">
+             <h3 ng-class="{ playing: isPlaying(map) }">{{map.map}}</h3>
+             <p ng-if="isPlaying(map)" ng-class="{ playing: isPlaying(map) }">
+               Currently being played by {{getLastServer(map).serverName}} with {{getLastServer(map).playerCount}} player(s)
+             </p>
+             <p ng-if="!isPlaying(map)" ng-class="{ playing: isPlaying(map) }">
+               Last played by {{map.playedBy[0].serverShortName.replace('_','')}} on {{map.playedLast}}
+             </p>
+           </a>
+   </div>   
     </div>
     <footer>
       <p>
@@ -139,17 +133,16 @@
     </footer>
     <script>
       var app = angular.module("mapApp", []);
-      app.controller("mapController", function ($scope, $http, $interval) {
-        $http
-          .get("https://sr-db.spco.xyz/serverdata")
-          .then(function (response) {
-            $scope.servers = response.data;
-            $http
-              .get("https://sr-db.spco.xyz/mapdata")
-              .then(function (response) {
-                $scope.maps = response.data;
-              });
-          });
+      app.controller("mapController", function ($scope, $http, $interval, $filter) {
+        $http.get("https://sr-db.spco.xyz/serverdata").then(function (response) {
+    $scope.servers = response.data;
+    $http.get("https://sr-db.spco.xyz/mapdata").then(function (response) {
+      $scope.maps = response.data.map(function (map) {
+        map.playedLast = $filter('date')(new Date(map.playedLast), 'yyyy-MM-dd HH:mm:ss');
+        return map;
+      });
+    });
+  });
 
         $scope.getLastServer = function (map) {
           for (var i = $scope.servers.length - 1; i >= 0; i--) {
